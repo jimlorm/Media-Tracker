@@ -96,8 +96,10 @@ public abstract class MediaEntry {
     }
 
     /**
-     * Displays the specific details of the media entry. 
+     * Retrieves the specific formatted details of the media entry.
      * To be implemented by concrete subclasses.
+     * 
+     * @return a formatted string containing the entry's details
      */
-    public abstract void displayDetails();
+    public abstract String getDetails();
 }

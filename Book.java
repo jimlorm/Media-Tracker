@@ -62,10 +62,10 @@ public class Book extends MediaEntry {
      * Displays the core details of the book to the console.
      */
     @Override
-    public void displayDetails() {
-        System.out.println("[Book] " + getTitle());
-        System.out.println("Author: " + author);
-        System.out.println("Genre: " + getGenre() + " | Status: " + getCurrentStatus());
-        System.out.println("Length: " + pageCount + " pages");
+    public String getDetails() {
+        return "[Book] " + title + "\n" +
+               "Author: " + author + "\n" +
+               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
+               "Length: " + pageCount + " pages";
     }
 }

@@ -61,10 +61,10 @@ public class Movie extends MediaEntry {
      * Displays the core details of the movie.
      */
     @Override
-    public void displayDetails() {
-        System.out.println("[Movie] " + getTitle());
-        System.out.println("Director: " + director);
-        System.out.println("Genre: " + getGenre() + " | Status: " + getCurrentStatus());
-        System.out.println("Runtime: " + runtimeMinutes + " mins");
+    public String getDetails() {
+        return "[Book] " + title + "\n" +
+               "Director: " + director + "\n" +
+               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
+               "Runtime: " + runtimeMinutes + " mins";
     }
 }

@@ -62,9 +62,9 @@ public class TVSeries extends MediaEntry {
      * Displays the core details of the TV series
      */
     @Override
-    public void displayDetails() {
-        System.out.println("[TV Series] " + getTitle());
-        System.out.println("Genre: " + getGenre() + " | Status: " + getCurrentStatus());
-        System.out.println("Total Episodes: " + totalEpisodes);
+    public String getDetails() {
+        return "[TV Series] " + title + "\n" +
+               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
+               "Total Episodes: " + totalEpisodes;
     }
 }
