@@ -73,9 +73,11 @@ public class Episode {
     }
     
     /**
-     * Displays the episode's season, number, and title.
+     * Retrieves the episode's season, number, and title.
+     * 
+     * @return a formatted string of the episode details
      */
-    public void displayDetails() {
-        System.out.println("Season " + season + " Ep " + episodeNumber + ": " + title);
+    public String getDetails() {
+        return "Season " + season + " Ep " + episodeNumber + ": " + title;
     }
 }
