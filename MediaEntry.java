@@ -25,7 +25,7 @@ public abstract class MediaEntry {
      * @param genre         the genre of the media
      * @param currentStatus the initial status (e.g., Planned, In Progress)
      */
-    public MediaEntry(String title, String genre, String currentStatus) {
+    public MediaEntry(String title, String genre, Status currentStatus) {
         this.title = title;
         this.genre = genre;
         this.currentStatus = currentStatus;
@@ -67,7 +67,7 @@ public abstract class MediaEntry {
      * Gets the current consumption status of the media entry.
      * @return the current status string
      */
-    public String getCurrentStatus() {
+    public Status getCurrentStatus() {
         return this.currentStatus;
     }
 
@@ -75,7 +75,7 @@ public abstract class MediaEntry {
      * Sets the consumption status of the media entry.
      * @param newStatus the new status to be assigned
      */
-    public void setCurrentStatus(String newStatus) {
+    public void setCurrentStatus(Status newStatus) {
         this.currentStatus = newStatus;
     }
 
