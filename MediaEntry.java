@@ -6,15 +6,15 @@
  */
 public abstract class MediaEntry {
     /** The title of the media entry. */
-    private String title;
+    protected String title;
     /** The genre of the media entry. */
-    private String genre;
+    protected String genre;
     /** The current consumption status of the media entry. */
-    private String currentStatus;
+    protected String currentStatus;
     /** The user's personal rating of the media entry (0-10). */
-    private int rating;
+    protected int rating;
     /** The user's personal review of the media entry. */
-    private String review;
+    protected String review;
     
     /** The predefined valid statuses for any media entry. */
     public static final String[] STATUSES = {"Planned","In Progress","Completed"};
