@@ -15,9 +15,8 @@ public abstract class MediaEntry {
     protected int rating;
     /** The user's personal review of the media entry. */
     protected String review;
-    
     /** The predefined valid statuses for any media entry. */
-    public static final String[] STATUSES = {"Planned","In Progress","Completed"};
+    protected Status currentStatus;
 
     /**
      * Constructs a new MediaEntry with the specified details.
