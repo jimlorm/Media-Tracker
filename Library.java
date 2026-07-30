@@ -88,35 +88,12 @@ public class Library {
      * @param m  the <code>MediaEntry</code> object whose status is being modified
      * @param sc the <code>Scanner</code> object used to read the user's menu choice
      */
-    public void updateProgress(MediaEntry m, Scanner sc) {
-        System.out.println("Update status to:");
-        for (int i = 0; i < MediaEntry.STATUSES.length; i++)
-            System.out.println("["+ (i+1) +"] " + MediaEntry.STATUSES[i]);
-        System.out.print("Enter: ");
-        int status = sc.nextInt() - 1; 
-        sc.nextLine();
+    public void updateProgress(MediaEntry m, Status newStatus) {
+        m.setCurrentStatus(newStatus);
 
-        while (status > 2 || status < 0) {
-            System.out.println("Error: Input out of bounds. Try again: ");
-            System.out.print("Enter: ");
-            status = sc.nextInt() - 1;
-            sc.nextLine();
-        }
-
-        switch (status) {
-            case 0:
-                m.setCurrentStatus(MediaEntry.STATUSES[0]);
-                m.setRating(0);
-                m.setReview(null);
-                break;
-            case 1:
-                m.setCurrentStatus(MediaEntry.STATUSES[1]);
-                m.setRating(0);
-                m.setReview(null);
-                break;
-            case 2:
-                m.setCurrentStatus(MediaEntry.STATUSES[2]);
-                break;
+        if (newStatus == Status.PLANNED || newStatus == Status.IN_PROGRESS) {
+            m.setRating(0);
+            m.setReview(null);
         }
     }
 
