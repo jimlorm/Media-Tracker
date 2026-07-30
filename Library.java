@@ -88,7 +88,11 @@ public class Library {
      * @param index the index of the media entry.
      */
     public void deleteEntry(int index) {
-        this.media.remove(index);
+        if (index >= 0 && index < media.size()) {
+            this.media.remove(index);
+        } else {
+            throw new IndexOutOfBoundsException("Invalid entry number.");
+        }
     }
 
     /**
