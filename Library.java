@@ -42,32 +42,17 @@ public class Library {
      * @param rating the numerical rating (0-10) given to the media entry.
      * @param sc the <code>Scanner</code> object used to read and validate user input.
      */
-    public void rateEntry(MediaEntry m, int rating, Scanner sc) {
-        if (m.getCurrentStatus().equals(MediaEntry.STATUSES[2])) {
-            // input validation for out of bounds rating
-            while (rating > 10 || rating < 0) {
-                System.out.println("Error: Ratings are only from 0 - 10 stars! Try again.");
-                System.out.print("Enter rating (0-10 stars): ");
-                rating = sc.nextInt();
-                sc.nextLine();
-            }
-            m.setRating(rating);
-            System.out.println("You've rated " + m.getTitle() + " " + rating + " stars!");
-
-            System.out.print("Write a review? (y/n): ");
-            char choice = sc.next().toLowerCase().charAt(0);
-            sc.nextLine();
-
-            if (choice == 'y') {
-                System.out.println("What did you think about " + m.getTitle() + "? (Press ENTER to submit)");
-                String review = sc.nextLine();
-                m.setReview(review);
-                System.out.println("Rating and Review successfully added!");
-            }
-        } 
-        else {
-            System.out.println("You haven't finished this yet. Rate it when you do!");
+    public void rateEntry(MediaEntry m, int rating, String review) {
+        if (m.currentStatus != Status.COMPLETED) {
+            throw new IllegalArgumentException("You can only rate a completed media. Finish it first then update its status!")
         }
+
+        if (rating < 0 || rating > 10) {
+            throw new IllegalArgumentException("Rating must be between 0 and 10.");
+        }
+
+        m.setRating(rating);
+        m.setReview(review);
     }
 
     /**
