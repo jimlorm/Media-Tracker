@@ -514,5 +514,50 @@ public class MediaVault {
             System.out.println("Invalid entry number.");
         }
     }
+
+    private static void displayLibraryMenu(Scanner sc, Library library, User user) {
+        System.out.println("\n--- " + user.getUsername() + "'s Library ---");
+        if (library.getSize() == 0) {
+            System.out.println("No media in your library yet.");
+            return;
+        }
+
+        System.out.println("Display by:\n  1 - Entire Library\n  2 - Filter by Status\n  3 - Filter by Type");
+        System.out.print("Choice: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        List<MediaEntry> results;
+
+        if (choice == 2) {
+            System.out.println("Status:\n  1 - Planned\n  2 - In Progress\n  3 - Completed");
+            System.out.print("Choice: ");
+            int statChoice = sc.nextInt();
+            sc.nextLine();
+            Status target = (statChoice == 3) ? Status.COMPLETED : (statChoice == 2) ? Status.IN_PROGRESS : Status.PLANNED;
+            
+            results = library.getMediaByStatus(target); 
+        } else if (choice == 3) {
+            System.out.println("Type:\n  1 - Book\n  2 - Movie\n  3 - TV Series");
+            System.out.print("Choice: ");
+            int typeChoice = sc.nextInt();
+            sc.nextLine();
+            Class<?> targetClass = (typeChoice == 1) ? Book.class : (typeChoice == 2) ? Movie.class : TVSeries.class;
+            
+            results = library.getMediaByType(targetClass); 
+        } else {
+            results = library.getAllMedia();
+        }
+
+        System.out.println("\n--- Results ---");
+        if (results.isEmpty()) {
+            System.out.println("No matching items found.");
+        } else {
+            for (int i = 0; i < results.size(); i++) {
+                System.out.println((i + 1) + ". " + results.get(i).getTitle() + " (" + results.get(i).getCurrentStatus() + ")");
+            }
+            System.out.println("\nTotal Items: " + results.size());
+        }
+    }
 }
 
