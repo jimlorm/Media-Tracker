@@ -10,13 +10,11 @@ public abstract class MediaEntry {
     /** The genre of the media entry. */
     protected String genre;
     /** The current consumption status of the media entry. */
-    protected String currentStatus;
+    protected Status currentStatus;
     /** The user's personal rating of the media entry (0-10). */
     protected int rating;
     /** The user's personal review of the media entry. */
     protected String review;
-    /** The predefined valid statuses for any media entry. */
-    protected Status currentStatus;
 
     /**
      * Constructs a new MediaEntry with the specified details.
