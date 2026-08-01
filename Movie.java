@@ -19,7 +19,7 @@ public class Movie extends MediaEntry {
      * @param director       the director of the movie
      * @param runtimeMinutes the total runtime in minutes
      */
-    public Movie(String title, String genre, String status, String director, int runtimeMinutes) {
+    public Movie(String title, String genre, Status status, String director, int runtimeMinutes) {
         super(title, genre, status);
         this.director = director;
         this.runtimeMinutes = runtimeMinutes;

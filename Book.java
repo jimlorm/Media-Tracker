@@ -20,7 +20,7 @@ public class Book extends MediaEntry {
      * @param author    the author of the book
      * @param pageCount the total number of pages
      */
-    public Book(String title, String genre, String status, String author, int pageCount) {
+    public Book(String title, String genre, Status status, String author, int pageCount) {
         super(title, genre, status);
         this.author = author;
         this.pageCount = pageCount;

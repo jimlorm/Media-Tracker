@@ -20,7 +20,7 @@ public class TVSeries extends MediaEntry {
      * @param status        the current consumption status
      * @param totalEpisodes the total number of episodes in the series
      */
-    public TVSeries(String title, String genre, String status, int totalEpisodes) {
+    public TVSeries(String title, String genre, Status status, int totalEpisodes) {
         super(title, genre, status);
         this.totalEpisodes = totalEpisodes;
         this.episodes = new ArrayList<>();
