@@ -12,4 +12,9 @@ public enum Status {
     public String getStatusDisplay() {
         return statusDisplay;
     }
+
+    @Override
+    public String toString() {
+        return statusDisplay;
+    }
 }
