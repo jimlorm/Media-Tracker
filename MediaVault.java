@@ -362,5 +362,61 @@ public class MediaVault {
             System.out.println("[" + (i + 1) + "] " + mediaList.get(i).getTitle() + " - " + mediaList.get(i).getCurrentStatus());
         }
     }
+
+    private static void addMediaMenu(Scanner sc, Library library) {
+        System.out.println("\nWhat type of media are you adding?");
+        System.out.println("  1 - Book\n  2 - Movie\n  3 - TV Series");
+        System.out.print("Choice: ");
+        int type = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Title: ");
+        String title = sc.nextLine();
+        System.out.print("Enter Genre: ");
+        String genre = sc.nextLine();
+
+        System.out.println("Select Status:\n  1 - Planned\n  2 - In Progress");
+        System.out.print("Choice: ");
+        int statusChoice = sc.nextInt();
+        sc.nextLine();
+        Status status = (statusChoice == 2) ? Status.IN_PROGRESS : Status.PLANNED;
+
+        switch (type) {
+            case 1:
+                System.out.print("Enter Author: ");
+                String author = sc.nextLine();
+                System.out.print("Enter Page Count: ");
+                int pages = sc.nextInt();
+                sc.nextLine();
+                library.addEntry(new Book(title, genre, status, author, pages));
+                System.out.println("Book added successfully!");
+                break;
+            case 2:
+                System.out.print("Enter Director: ");
+                String director = sc.nextLine();
+                System.out.print("Enter Runtime (in minutes): ");
+                int runtime = sc.nextInt();
+                sc.nextLine();
+                library.addEntry(new Movie(title, genre, status, director, runtime));
+                System.out.println("Movie added successfully!");
+                break;
+            case 3:
+                System.out.print("Enter Total Number of Episodes: ");
+                int episodes = sc.nextInt();
+                sc.nextLine();
+                TVSeries newSeries = new TVSeries(title, genre, status, episodes);
+                
+                System.out.println("Let's add the episode titles for this series.");
+                for (int i = 1; i <= episodes; i++) {
+                    System.out.print("Enter title for Episode " + i + ": ");
+                    newSeries.addEpisode(new Episode(sc.nextLine(), i, 1));
+                }
+                library.addEntry(newSeries);
+                System.out.println("TV Series and episodes added successfully!");
+                break;
+            default:
+                System.out.println("Invalid media type. Cancelled.");
+        }
+    }
 }
 
