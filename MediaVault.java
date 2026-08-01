@@ -446,5 +446,38 @@ public class MediaVault {
             System.out.println("Invalid entry number.");
         }
     }
+
+    private static void rateReviewMenu(Scanner sc, Library library) {
+        if (library.getSize() == 0) {
+            System.out.println("Your library is empty!");
+            return;
+        }
+        printSimpleList(library);
+        System.out.print("Enter entry number to rate: ");
+        int index = sc.nextInt() - 1;
+        sc.nextLine();
+
+        MediaEntry entry = library.getEntry(index);
+        if (entry != null) {
+            try {
+                System.out.print("Enter rating (0-10): ");
+                int rating = sc.nextInt();
+                sc.nextLine();
+                
+                System.out.print("Write a review (or press ENTER to skip): ");
+                String review = sc.nextLine();
+                if (review.trim().isEmpty()) review = null;
+                
+                
+                library.rateAndReviewEntry(entry, rating, review);
+                System.out.println("Successfully rated!");
+                
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Invalid entry number.");
+        }
+    }
 }
 
