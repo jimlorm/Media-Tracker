@@ -418,5 +418,33 @@ public class MediaVault {
                 System.out.println("Invalid media type. Cancelled.");
         }
     }
+
+    private static void updateStatusMenu(Scanner sc, Library library) {
+        if (library.getSize() == 0) {
+            System.out.println("Your library is empty!");
+            return;
+        }
+        printSimpleList(library);
+        System.out.print("Enter entry number to update: ");
+        int index = sc.nextInt() - 1;
+        sc.nextLine();
+
+        MediaEntry entry = library.getEntry(index);
+        if (entry != null) {
+            System.out.println("Update status to:\n  1 - Planned\n  2 - In Progress\n  3 - Completed");
+            System.out.print("Enter: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            
+            Status newStatus = Status.PLANNED;
+            if (choice == 2) newStatus = Status.IN_PROGRESS;
+            if (choice == 3) newStatus = Status.COMPLETED;
+
+            library.updateProgress(entry, newStatus);
+            System.out.println("Status updated successfully.");
+        } else {
+            System.out.println("Invalid entry number.");
+        }
+    }
 }
 
