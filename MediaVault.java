@@ -559,5 +559,24 @@ public class MediaVault {
             System.out.println("\nTotal Items: " + results.size());
         }
     }
+
+    private static void deleteEntryMenu(Scanner sc, Library library) {
+        if (library.getSize() == 0) {
+            System.out.println("Your library is empty!");
+            return;
+        }
+        printSimpleList(library);
+        System.out.print("Enter entry number to DELETE: ");
+        int index = sc.nextInt() - 1;
+        sc.nextLine();
+
+        try {
+            library.deleteEntry(index);
+            System.out.println("Entry successfully deleted.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
 }
 
