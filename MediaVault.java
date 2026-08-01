@@ -479,5 +479,40 @@ public class MediaVault {
             System.out.println("Invalid entry number.");
         }
     }
+
+    private static void viewDetailsMenu(Scanner sc, Library library) {
+        if (library.getSize() == 0) {
+            System.out.println("Your library is empty!");
+            return;
+        }
+        printSimpleList(library);
+        System.out.print("Enter entry number to view: ");
+        int index = sc.nextInt() - 1;
+        sc.nextLine();
+
+        MediaEntry entry = library.getEntry(index);
+        if (entry != null) {
+            System.out.println("\n-----------------------------------------");
+            
+            System.out.println(entry.getDetails()); 
+            
+            if (entry.getCurrentStatus() == Status.COMPLETED) {
+                System.out.println("Your Rating: " + entry.getRating() + "/10");
+                System.out.println("Your Review: " + (entry.getReview() != null ? entry.getReview() : "(No review)"));
+            } else {
+                System.out.println("Rating: N/A (Finish it first!)");
+            }
+            
+            if (entry instanceof TVSeries) {
+                System.out.println("\n------- Episode List --------");
+                for (Episode ep : ((TVSeries) entry).getEpisodes()) {
+                    System.out.println(ep.getDetails()); // Episode details
+                }
+            }
+            System.out.println("-----------------------------------------");
+        } else {
+            System.out.println("Invalid entry number.");
+        }
+    }
 }
 
