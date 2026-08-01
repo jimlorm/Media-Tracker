@@ -44,7 +44,7 @@ public class Library {
      */
     public void rateEntry(MediaEntry m, int rating, String review) {
         if (m.currentStatus != Status.COMPLETED) {
-            throw new IllegalArgumentException("You can only rate a completed media. Finish it first then update its status!")
+            throw new IllegalArgumentException("You can only rate a completed media. Finish it first then update its status!");
         }
 
         if (rating < 0 || rating > 10) {
