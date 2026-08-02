@@ -13,6 +13,13 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * The controller class for the main application window.
+ * <p>Handles all user interactions, UI updates, and bridges the View with the Model.</p>
+ *
+ * @author Jimlor
+ * @version 2.2
+ */
 public class MainController {
 
     @FXML private ListView<String> mediaListView;
@@ -20,11 +27,18 @@ public class MainController {
     @FXML private Button btnAdd, btnUpdate, btnRate, btnDelete, btnFilter;
     @FXML private TextField searchField;
     @FXML private Button btnSummary;
-    private User currentUser;
 
+    /** The active user's profile. */
+    private User currentUser;
+    /** The library belonging to the active user. */
     private Library library;
+    /** A tracking list to ensure the visual list indices map correctly to the backend objects. */
     private List<MediaEntry> currentDisplayedMedia = new ArrayList<>();
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * <p>Sets up event listeners for user interactions.</p>
+     */
     @FXML
     public void initialize() {
         mediaListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
@@ -60,12 +74,22 @@ public class MainController {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch(newValue));
     }
 
+    /**
+     * Sets the active user for this controller and refreshes the displayed list.
+     *
+     * @param user the {@link User} whose library is being managed
+     */
     public void setUser(User user) {
         this.currentUser = user;
         this.library = user.getLibrary();
         refreshList(library.getAllMedia());
     }
 
+    /**
+     * Refreshes the ListView to display a specific collection of media entries.
+     *
+     * @param listToDisplay the list of {@link MediaEntry} objects to show
+     */
     private void refreshList(List<MediaEntry> listToDisplay) {
         mediaListView.getItems().clear();
         currentDisplayedMedia = listToDisplay;
@@ -77,6 +101,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Filters the currently displayed library based on user selection.
+     */
     private void handleFilter() {
         if (library == null) return;
 
@@ -115,6 +142,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Handles the deletion of a selected media entry with user confirmation.
+     */
     private void handleDeleteEntry() {
         // Get the currently selected item's index
         int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
@@ -143,6 +173,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Opens a dialog window to allow the user to add a new media entry.
+     */
     private void handleAddEntry() {
         Stage addWindow = new Stage();
         addWindow.initModality(Modality.APPLICATION_MODAL);
@@ -215,6 +248,9 @@ public class MainController {
         addWindow.showAndWait();
     }
 
+    /**
+     * Prompts the user to update the consumption status of the selected entry.
+     */
     private void handleUpdateStatus() {
         int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
@@ -236,6 +272,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Formats and updates the details text area for a given media entry.
+     *
+     * @param media the {@link MediaEntry} to display details for
+     */
     private void updateDetailsArea(MediaEntry media) {
         if (media == null) {
             detailsTextArea.setText("Select an item to see details...");
@@ -264,6 +305,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Opens a dialog allowing the user to provide a rating and review for a completed entry.
+     */
     private void handleRateReview() {
         int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
@@ -309,6 +353,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Processes live search input to filter the library by title.
+     *
+     * @param query the search string entered by the user
+     */
     private void handleSearch(String query) {
         if (library != null) {
             // If the search bar is empty, show everything
@@ -328,6 +377,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Compiles and displays a statistical summary of the user's library.
+     */
     private void handleSummary() {
         if (library != null && currentUser != null) {
             int total = library.getSize();
