@@ -62,7 +62,7 @@ public class Movie extends MediaEntry {
      */
     @Override
     public String getDetails() {
-        return "[Book] " + title + "\n" +
+        return "[Movie] " + title + "\n" +
                "Director: " + director + "\n" +
                "Genre: " + genre + " | Status: " + currentStatus + "\n" +
                "Runtime: " + runtimeMinutes + " mins";
