@@ -1,3 +1,5 @@
+package mediavault;
+
 /**
  * Represents a standalone book entry in the library.
  * <p>Extends the {@link MediaEntry} class with book-specific attributes.</p>
@@ -12,7 +14,7 @@ public class Book extends MediaEntry {
     private int pageCount;
 
     /**
-     * Constructs a new Book entry.
+     * Constructs a new mediavault.Book entry.
      *
      * @param title     the title of the book
      * @param genre     the genre of the book
@@ -52,7 +54,9 @@ public class Book extends MediaEntry {
 
     /**
      * Sets the page count of the book.
+     *
      * @param pageCount the new page count
+     * @throws IllegalArgumentException if the page count provided is negative
      */
     public void setPageCount(int pageCount) {
         if (pageCount < 0) {
@@ -63,13 +67,15 @@ public class Book extends MediaEntry {
     }
 
     /**
-     * Displays the core details of the book to the console.
+     * Retrieves the formatted details of the book.
+     *
+     * @return a string containing the book's information
      */
     @Override
     public String getDetails() {
-        return "[Book] " + title + "\n" +
+        return "[mediavault.Book] " + title + "\n" +
                "Author: " + author + "\n" +
-               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
+               "Genre: " + genre + " | mediavault.Status: " + currentStatus + "\n" +
                "Length: " + pageCount + " pages";
     }
 }
