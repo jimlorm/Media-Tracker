@@ -5,25 +5,28 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.ChoiceDialog;
+
 import java.util.Optional;
-import javafx.scene.control.TextInputDialog;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainController {
 
     @FXML private ListView<String> mediaListView;
     @FXML private TextArea detailsTextArea;
-    @FXML private Button btnAdd, btnUpdate, btnRate, btnDelete;
+    @FXML private Button btnAdd, btnUpdate, btnRate, btnDelete, btnFilter;
 
     private Library library;
+    private List<MediaEntry> currentDisplayedMedia = new ArrayList<>();
 
     @FXML
     public void initialize() {
         mediaListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             int selectedIndex = newValue.intValue();
 
-            if (selectedIndex >= 0 && library != null) {
-                MediaEntry selectedMedia = library.getEntry(selectedIndex);
+            if (selectedIndex >= 0 && currentDisplayedMedia != null) {
+                MediaEntry selectedMedia = currentDisplayedMedia.get(selectedIndex);
                 if (selectedMedia != null) {
                     updateDetailsArea(selectedMedia);
                 }
@@ -41,21 +44,63 @@ public class MainController {
 
         // Listen for rate entry button
         btnRate.setOnAction(event -> handleRateReview());
+
+        // Listen for filter button
+        btnFilter.setOnAction(event -> handleFilter());
     }
 
     public void setLibrary(Library library) {
         this.library = library;
-        refreshList();
+        refreshList(library.getAllMedia());
     }
 
-    private void refreshList() {
+    private void refreshList(List<MediaEntry> listToDisplay) {
         mediaListView.getItems().clear();
+        currentDisplayedMedia = listToDisplay;
 
-        if (library != null) {
-            for (MediaEntry m : library.getAllMedia()) {
+        if (currentDisplayedMedia != null) {
+            for (MediaEntry m : currentDisplayedMedia) {
                 mediaListView.getItems().add(m.getTitle() + " (" + m.getCurrentStatus() + ")");
             }
         }
+    }
+
+    private void handleFilter() {
+        if (library == null) return;
+
+        // Create options for the user to pick from
+        List<String> filterOptions = Arrays.asList(
+                "Show All",
+                "Status: Planned", "Status: In Progress", "Status: Completed",
+                "Type: Book", "Type: Movie", "Type: TV Series"
+        );
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("Show All", filterOptions);
+        dialog.setTitle("Filter Library");
+        dialog.setHeaderText("Filter your media entries");
+        dialog.setContentText("Select a filter option:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(choice -> {
+            if (choice.equals("Show All")) {
+                refreshList(library.getAllMedia());
+            } else if (choice.equals("Status: Planned")) {
+                refreshList(library.getMediaByStatus(Status.PLANNED));
+            } else if (choice.equals("Status: In Progress")) {
+                refreshList(library.getMediaByStatus(Status.IN_PROGRESS));
+            } else if (choice.equals("Status: Completed")) {
+                refreshList(library.getMediaByStatus(Status.COMPLETED));
+            } else if (choice.equals("Type: Book")) {
+                refreshList(library.getMediaByType(Book.class));
+            } else if (choice.equals("Type: Movie")) {
+                refreshList(library.getMediaByType(Movie.class));
+            } else if (choice.equals("Type: TV Series")) {
+                refreshList(library.getMediaByType(TVSeries.class));
+            }
+
+            // Clear the text area since the list just changed
+            detailsTextArea.setText("Select an item to see details...");
+        });
     }
 
     private void handleDeleteEntry() {
@@ -63,6 +108,8 @@ public class MainController {
         int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
 
         if (selectedIndex >= 0) {
+            MediaEntry selectedMedia = currentDisplayedMedia.get(selectedIndex);
+
             // Confirm deletion with a pop-up
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmAlert.setTitle("Confirm Delete");
@@ -72,17 +119,15 @@ public class MainController {
             // If the user clicks ok, delete it from the Model and refresh the View
             confirmAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    library.deleteEntry(selectedIndex); // Delete from backend
-                    refreshList(); // Update the visual list
-                    detailsTextArea.setText("Select an item to see details..."); // Clear the text area
+                    int trueIndex = library.getAllMedia().indexOf(selectedMedia);
+                    library.deleteEntry(trueIndex);
+
+                    refreshList(library.getAllMedia());
+                    detailsTextArea.setText("Select an item to see details...");
                 }
             });
         } else {
-            // If they clicked the button without selecting an item first
-            Alert errorAlert = new Alert(Alert.AlertType.WARNING);
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Please select an entry to delete.");
-            errorAlert.showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Please select an entry to delete.").showAndWait();
         }
     }
 
@@ -132,14 +177,14 @@ public class MainController {
                         TextInputDialog epDialog = new TextInputDialog("Episode " + i);
                         epDialog.setTitle("Add Episode Details");
                         epDialog.setHeaderText("Enter title for Episode " + i + " of " + title);
-                        
+
                         Optional<String> epTitle = epDialog.showAndWait();
                         newSeries.addEpisode(new Episode(epTitle.orElse("Episode " + i), i));
                     }
                     library.addEntry(newSeries);
                 }
 
-                refreshList();
+                refreshList(library.getAllMedia()); // Reset list after adding
                 addWindow.close();
 
             } catch (NumberFormatException ex) {
@@ -161,7 +206,7 @@ public class MainController {
     private void handleUpdateStatus() {
         int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
-            MediaEntry selectedMedia = library.getEntry(selectedIndex);
+            MediaEntry selectedMedia = currentDisplayedMedia.get(selectedIndex);
 
             ChoiceDialog<Status> dialog = new ChoiceDialog<>(selectedMedia.getCurrentStatus(), Status.PLANNED, Status.IN_PROGRESS, Status.COMPLETED);
             dialog.setTitle("Update Status");
@@ -170,9 +215,8 @@ public class MainController {
 
             Optional<Status> result = dialog.showAndWait();
             result.ifPresent(newStatus -> {
-                // Call the model to update progress
                 library.updateProgress(selectedMedia, newStatus);
-                refreshList();
+                refreshList(library.getAllMedia()); // Reset to show all so the user sees the update
                 updateDetailsArea(selectedMedia);
             });
         } else {
@@ -183,13 +227,10 @@ public class MainController {
     private void updateDetailsArea(MediaEntry media) {
         if (media == null) {
             detailsTextArea.setText("Select an item to see details...");
-        }
-        else {
+        } else {
             StringBuilder details = new StringBuilder(media.getDetails());
 
-            // If it's completed, append the rating and review
             if (media.getCurrentStatus() == Status.COMPLETED) {
-                // Check if it has actually been reviewed/rated
                 if (media.getReview() == null) {
                     details.append("\n\nYour Rating: (Not yet rated)");
                 } else {
@@ -214,7 +255,7 @@ public class MainController {
     private void handleRateReview() {
         int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
-            MediaEntry selectedMedia = library.getEntry(selectedIndex);
+            MediaEntry selectedMedia = currentDisplayedMedia.get(selectedIndex);
 
             Stage rateWindow = new Stage();
             rateWindow.initModality(Modality.APPLICATION_MODAL);
@@ -236,7 +277,6 @@ public class MainController {
                     int rating = Integer.parseInt(ratingField.getText());
                     String review = reviewField.getText();
 
-                    // THIS IS WHERE YOUR MODEL ENFORCES THE RULES!
                     library.rateEntry(selectedMedia, rating, review);
 
                     updateDetailsArea(selectedMedia);
@@ -244,7 +284,6 @@ public class MainController {
                 } catch (NumberFormatException ex) {
                     new Alert(Alert.AlertType.ERROR, "Rating must be a number!").showAndWait();
                 } catch (Exception ex) {
-                    // This catches the IllegalStateException from Library if the status isn't COMPLETED
                     new Alert(Alert.AlertType.ERROR, ex.getMessage()).showAndWait();
                 }
             });

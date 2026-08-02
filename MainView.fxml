@@ -10,6 +10,7 @@
             <Button fx:id="btnUpdate" text="Update Status" />
             <Button fx:id="btnRate" text="Rate/Review" />
             <Button fx:id="btnDelete" text="Delete" />
+            <Button fx:id="btnFilter" text="Filter" />
         </ToolBar>
     </top>
 
