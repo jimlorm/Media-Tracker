@@ -1,8 +1,10 @@
+package mediavault;
+
 /**
  * Represents an abstract base class for any media entry in the library.
  * <p>This class contains the common attributes and methods shared across all media types.</p>
- * @author Rapha
- * @version 1.3
+ * @author Jimlor
+ * @version 1.4
  */
 public abstract class MediaEntry {
     /** The title of the media entry. */
@@ -31,6 +33,7 @@ public abstract class MediaEntry {
 
     /**
      * Gets the title of the media entry.
+     *
      * @return the title
      */
     public String getTitle() {
@@ -39,6 +42,7 @@ public abstract class MediaEntry {
 
     /**
      * Gets the user's rating for the media entry.
+     *
      * @return the rating from 0 to 10
      */
     public int getRating() {
@@ -47,6 +51,7 @@ public abstract class MediaEntry {
 
     /**
      * Gets the user's written review for the media entry.
+     *
      * @return the written review, or null if not provided
      */
     public String getReview() {
@@ -55,6 +60,7 @@ public abstract class MediaEntry {
 
     /**
      * Gets the genre of the media entry.
+     *
      * @return the genre
      */
     public String getGenre() {
@@ -63,14 +69,16 @@ public abstract class MediaEntry {
 
     /**
      * Gets the current consumption status of the media entry.
-     * @return the current status string
+     *
+     * @return the current status enum
      */
     public Status getCurrentStatus() {
         return this.currentStatus;
     }
 
     /**
-     * Sets the consumption status of the media entry.
+     * Sets the consumption status of the media entry without any side effects.
+     *
      * @param newStatus the new status to be assigned
      */
     public void setCurrentStatus(Status newStatus) {
@@ -79,6 +87,8 @@ public abstract class MediaEntry {
 
     /**
      * Updates the consumption status of this entry.
+     * <p>If the new status is Planned or In Progress, any existing rating and review are cleared.</p>
+     *
      * @param newStatus the new status to transition to
      */
     public void updateStatus(Status newStatus) {
@@ -92,6 +102,7 @@ public abstract class MediaEntry {
 
     /**
      * Sets the user's review for the media entry.
+     *
      * @param review the review text
      */
     public void setReview(String review) {
@@ -100,7 +111,9 @@ public abstract class MediaEntry {
 
     /**
      * Sets the user's numerical rating for the media entry.
+     *
      * @param rating the rating score from 0 to 10
+     * @throws IllegalArgumentException if rating is outside the 0-10 range
      */
     public void setRating(int rating) {
         if (rating < 0 || rating > 10) {
@@ -113,6 +126,7 @@ public abstract class MediaEntry {
      * Rates and reviews this media entry.
      * @param rating the numerical rating (0-10) given to the media entry
      * @param review the written review to attach
+     * @throws IllegalStateException if this entry is not yet marked Completed
      */
     public void rate(int rating, String review) {
         if (currentStatus != Status.COMPLETED) {
