@@ -1,0 +1,6 @@
+TVSeries|Chernobyl|Historical drama|PLANNED|0|NO_REVIEW|5|None~1;;Please Remain Calm~2;;Open Wide, O Earth~3;;The Happiness of All Mankind~4;;Vichnaya Pamyat~5
+Movie|One More Chance|Romance comedy|PLANNED|0|NO_REVIEW|Cathy garcia-Sampana|115
+Book|The Little Prince|Fantasy|PLANNED|0|NO_REVIEW|Antoine de Saint-Exupéry|96
+Movie|Dead Poets Society|Drama|PLANNED|0|NO_REVIEW|Peter Weir|128
+TVSeries|The Queen's Gambit|Drama|PLANNED|0|NO_REVIEW|7|Openings~1;;Exchanges~2;;Doubled Pawns~3;;Middle Game~4;;Fork~5;;Adjournment~6;;End Game~7
+Book|The Alchemist|Adventure|PLANNED|0|NO_REVIEW|Paulo Coelho|208
