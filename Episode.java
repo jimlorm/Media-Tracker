@@ -8,8 +8,6 @@ public class Episode {
     private String title;
     /** The numerical order of the episode */
     private int episodeNumber;
-    /** The season number the episode belongs to. */
-    private int season;
 
     /**
      * Constructs a new Episode.
@@ -18,10 +16,9 @@ public class Episode {
      * @param episodeNumber the episode's numerical order
      * @param season        the season number
      */
-    public Episode(String title, int episodeNumber, int season) {
+    public Episode(String title, int episodeNumber) {
         this.title = title;
         this.episodeNumber = episodeNumber;
-        this.season = season;
     }
 
     /**
@@ -55,22 +52,6 @@ public class Episode {
     public void setEpisodeNumber(int episodeNumber) { 
         this.episodeNumber = episodeNumber; 
     }
-
-    /**
-     * Gets the season number this episode belongs to.
-     * @return the season number
-     */
-    public int getSeason() { 
-        return season; 
-    }
-
-    /**
-     * Sets the season number this episode belongs to.
-     * @param season the new season number
-     */
-    public void setSeason(int season) { 
-        this.season = season; 
-    }
     
     /**
      * Retrieves the episode's season, number, and title.
@@ -78,6 +59,6 @@ public class Episode {
      * @return a formatted string of the episode details
      */
     public String getDetails() {
-        return "Season " + season + " Ep " + episodeNumber + ": " + title;
+        return "Ep " + episodeNumber + ": " + title;
     }
 }
