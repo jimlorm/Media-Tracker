@@ -40,19 +40,10 @@ public class Library {
      *
      * @param m the <code>MediaEntry</code> to be rated.
      * @param rating the numerical rating (0-10) given to the media entry.
-     * @param sc the <code>Scanner</code> object used to read and validate user input.
+     * @param review the written review to attach.
      */
     public void rateEntry(MediaEntry m, int rating, String review) {
-        if (m.currentStatus != Status.COMPLETED) {
-            throw new IllegalArgumentException("You can only rate a completed media. Finish it first then update its status!");
-        }
-
-        if (rating < 0 || rating > 10) {
-            throw new IllegalArgumentException("Rating must be between 0 and 10.");
-        }
-
-        m.setRating(rating);
-        m.setReview(review);
+        m.rate(rating, review);
     }
 
     /**
@@ -71,15 +62,10 @@ public class Library {
      * </p>
      *
      * @param m  the <code>MediaEntry</code> object whose status is being modified
-     * @param sc the <code>Scanner</code> object used to read the user's menu choice
+     * @param newStatus the new status to transition to
      */
     public void updateProgress(MediaEntry m, Status newStatus) {
-        m.setCurrentStatus(newStatus);
-
-        if (newStatus == Status.PLANNED || newStatus == Status.IN_PROGRESS) {
-            m.setRating(0);
-            m.setReview(null);
-        }
+        m.updateStatus(newStatus);
     }
 
     /**
