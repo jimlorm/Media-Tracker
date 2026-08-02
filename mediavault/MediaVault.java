@@ -1,3 +1,5 @@
+package mediavault;
+
 import java.util.*;
 
 public class MediaVault {
@@ -7,7 +9,7 @@ public class MediaVault {
         int choice;
 
         System.out.println("-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-");
-        System.out.println("                  Welcome to MediaVault!                  ");
+        System.out.println("                  Welcome to mediavault.MediaVault!                  ");
         System.out.println("-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-+H+-");
 
         System.out.print("Enter your username to begin: ");
@@ -18,10 +20,10 @@ public class MediaVault {
         while (running) {
             System.out.println("\n--------------------- MAIN MENU ---------------------");
             System.out.println("  1 - Add a New Media Entry");
-            System.out.println("  2 - Update Entry Status");
+            System.out.println("  2 - Update Entry mediavault.Status");
             System.out.println("  3 - Rate & Review a Completed Entry");
             System.out.println("  4 - View Full Details of an Entry");
-            System.out.println("  5 - Display Entire Library");
+            System.out.println("  5 - Display Entire mediavault.Library");
             System.out.println("  6 - Delete an Entry");
             System.out.println("  7 - Exit");
             System.out.println("-------------------------------------------------------");
@@ -69,7 +71,7 @@ public class MediaVault {
 
     private static void addMediaMenu(Scanner sc, Library library) {
         System.out.println("\nWhat type of media are you adding?");
-        System.out.println("  1 - Book\n  2 - Movie\n  3 - TV Series");
+        System.out.println("  1 - mediavault.Book\n  2 - mediavault.Movie\n  3 - TV Series");
         System.out.print("Choice: ");
         int type = sc.nextInt();
         sc.nextLine();
@@ -79,7 +81,7 @@ public class MediaVault {
         System.out.print("Enter Genre: ");
         String genre = sc.nextLine();
 
-        System.out.println("Select Status:\n  1 - Planned\n  2 - In Progress");
+        System.out.println("Select mediavault.Status:\n  1 - Planned\n  2 - In Progress");
         System.out.print("Choice: ");
         int statusChoice = sc.nextInt();
         sc.nextLine();
@@ -93,7 +95,7 @@ public class MediaVault {
                 int pages = sc.nextInt();
                 sc.nextLine();
                 library.addEntry(new Book(title, genre, status, author, pages));
-                System.out.println("Book added successfully!");
+                System.out.println("mediavault.Book added successfully!");
                 break;
             case 2:
                 System.out.print("Enter Director: ");
@@ -102,7 +104,7 @@ public class MediaVault {
                 int runtime = sc.nextInt();
                 sc.nextLine();
                 library.addEntry(new Movie(title, genre, status, director, runtime));
-                System.out.println("Movie added successfully!");
+                System.out.println("mediavault.Movie added successfully!");
                 break;
             case 3:
                 System.out.print("Enter Total Number of Episodes: ");
@@ -112,8 +114,8 @@ public class MediaVault {
                 
                 System.out.println("Let's add the episode titles for this series.");
                 for (int i = 1; i <= episodes; i++) {
-                    System.out.print("Enter title for Episode " + i + ": ");
-                    newSeries.addEpisode(new Episode(sc.nextLine(), i, 1));
+                    System.out.print("Enter title for mediavault.Episode " + i + ": ");
+                    newSeries.addEpisode(new Episode(sc.nextLine(), i));
                 }
                 library.addEntry(newSeries);
                 System.out.println("TV Series and episodes added successfully!");
@@ -145,7 +147,7 @@ public class MediaVault {
             if (choice == 3) newStatus = Status.COMPLETED;
 
             library.updateProgress(entry, newStatus);
-            System.out.println("Status updated successfully.");
+            System.out.println("mediavault.Status updated successfully.");
         } else {
             System.out.println("Invalid entry number.");
         }
@@ -208,9 +210,9 @@ public class MediaVault {
             }
             
             if (entry instanceof TVSeries) {
-                System.out.println("\n------- Episode List --------");
+                System.out.println("\n------- mediavault.Episode List --------");
                 for (Episode ep : ((TVSeries) entry).getEpisodes()) {
-                    System.out.println(ep.getDetails()); // Episode details
+                    System.out.println(ep.getDetails()); // mediavault.Episode details
                 }
             }
             System.out.println("-----------------------------------------");
@@ -220,13 +222,13 @@ public class MediaVault {
     }
 
     private static void displayLibraryMenu(Scanner sc, Library library, User user) {
-        System.out.println("\n--- " + user.getUsername() + "'s Library ---");
+        System.out.println("\n--- " + user.getUsername() + "'s mediavault.Library ---");
         if (library.getSize() == 0) {
             System.out.println("No media in your library yet.");
             return;
         }
 
-        System.out.println("Display by:\n  1 - Entire Library\n  2 - Filter by Status\n  3 - Filter by Type");
+        System.out.println("Display by:\n  1 - Entire mediavault.Library\n  2 - Filter by mediavault.Status\n  3 - Filter by Type");
         System.out.print("Choice: ");
         int choice = sc.nextInt();
         sc.nextLine();
@@ -234,7 +236,7 @@ public class MediaVault {
         List<MediaEntry> results;
 
         if (choice == 2) {
-            System.out.println("Status:\n  1 - Planned\n  2 - In Progress\n  3 - Completed");
+            System.out.println("mediavault.Status:\n  1 - Planned\n  2 - In Progress\n  3 - Completed");
             System.out.print("Choice: ");
             int statChoice = sc.nextInt();
             sc.nextLine();
@@ -242,7 +244,7 @@ public class MediaVault {
             
             results = library.getMediaByStatus(target); 
         } else if (choice == 3) {
-            System.out.println("Type:\n  1 - Book\n  2 - Movie\n  3 - TV Series");
+            System.out.println("Type:\n  1 - mediavault.Book\n  2 - mediavault.Movie\n  3 - TV Series");
             System.out.print("Choice: ");
             int typeChoice = sc.nextInt();
             sc.nextLine();

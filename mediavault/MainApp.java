@@ -1,3 +1,5 @@
+package mediavault;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,13 +21,13 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
         Parent root = loader.load();
 
         MainController controller = loader.getController();
-        controller.setLibrary(myLibrary);
+        controller.setUser(currentUser);
 
-        primaryStage.setTitle("MediaVault - " + currentUser.getUsername() + "'s Collection");
+        primaryStage.setTitle("mediavault.MediaVault - " + currentUser.getUsername() + "'s Collection");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
