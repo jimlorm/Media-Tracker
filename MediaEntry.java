@@ -78,6 +78,19 @@ public abstract class MediaEntry {
     }
 
     /**
+     * Updates the consumption status of this entry.
+     * @param newStatus the new status to transition to
+     */
+    public void updateStatus(Status newStatus) {
+        this.currentStatus = newStatus;
+
+        if (newStatus == Status.PLANNED || newStatus == Status.IN_PROGRESS) {
+            this.rating = 0;
+            this.review = null;
+        }
+    }
+
+    /**
      * Sets the user's review for the media entry.
      * @param review the review text
      */
@@ -90,7 +103,24 @@ public abstract class MediaEntry {
      * @param rating the rating score from 0 to 10
      */
     public void setRating(int rating) {
+        if (rating < 0 || rating > 10) {
+            throw new IllegalArgumentException("Rating must be between 0 and 10.");
+        }
         this.rating = rating;
+    }
+
+    /**
+     * Rates and reviews this media entry.
+     * @param rating the numerical rating (0-10) given to the media entry
+     * @param review the written review to attach
+     */
+    public void rate(int rating, String review) {
+        if (currentStatus != Status.COMPLETED) {
+            throw new IllegalStateException("You can only rate a completed media. Finish it first then update its status!");
+        }
+
+        setRating(rating);
+        setReview(review);
     }
 
     /**
