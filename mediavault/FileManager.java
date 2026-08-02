@@ -63,6 +63,13 @@ public class FileManager {
         }
     }
 
+    /**
+     * Loads the library data from the text file into the provided library instance.
+     * <p>Parses the text file line by line, reconstructing the appropriate
+     * {@link MediaEntry} subclass based on the saved type tag.</p>
+     *
+     * @param library the {@link Library} instance to populate with loaded data
+     */
     public static void loadLibrary(Library library) {
         File file = new File(FILE_NAME);
         if (file.exists()) {
