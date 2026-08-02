@@ -22,7 +22,7 @@ public class Movie extends MediaEntry {
     public Movie(String title, String genre, Status status, String director, int runtimeMinutes) {
         super(title, genre, status);
         this.director = director;
-        this.runtimeMinutes = runtimeMinutes;
+        setRuntimeMinutes(runtimeMinutes);
     }
 
     /**
@@ -54,6 +54,10 @@ public class Movie extends MediaEntry {
      * @param runtimeMinutes the new runtime in minutes
      */
     public void setRuntimeMinutes(int runtimeMinutes) { 
+        if (runtimeMinutes < 0) {
+            throw new IllegalArgumentException("Runtime cannot be negative.");
+        }
+        
         this.runtimeMinutes = runtimeMinutes; 
     }
     
