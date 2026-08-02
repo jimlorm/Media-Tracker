@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
+
+    <top>
+        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <Button fx:id="btnAdd" text="Add Entry" />
+            <Button fx:id="btnUpdate" text="Update Status" />
+            <Button fx:id="btnRate" text="Rate/Review" />
+            <Button fx:id="btnDelete" text="Delete" />
+        </ToolBar>
+    </top>
+
+    <left>
+        <ListView fx:id="mediaListView" prefHeight="360.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
+    </left>
+
+    <center>
+        <TextArea fx:id="detailsTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" text="Select an item to see details..." wrapText="true" BorderPane.alignment="CENTER" />
+    </center>
+
+</BorderPane>
