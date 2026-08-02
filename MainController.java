@@ -24,7 +24,7 @@ public class MainController {
             if (selectedIndex >= 0 && library != null) {
                 MediaEntry selectedMedia = library.getEntry(selectedIndex);
                 if (selectedMedia != null) {
-                    detailsTextArea.setText(selectedMedia.getDetails());
+                    updateDetailsArea(selectedMedia);
                 }
             }
         });
@@ -37,6 +37,9 @@ public class MainController {
 
         // Listen for update status button
         btnUpdate.setOnAction(event -> handleUpdateStatus());
+
+        // Listen for rate entry button
+        btnRate.setOnAction(event -> handleRateReview());
     }
 
     public void setLibrary(Library library) {
@@ -149,7 +152,6 @@ public class MainController {
         if (selectedIndex >= 0) {
             MediaEntry selectedMedia = library.getEntry(selectedIndex);
 
-            // Create a simple built-in dropdown dialog
             ChoiceDialog<Status> dialog = new ChoiceDialog<>(selectedMedia.getCurrentStatus(), Status.PLANNED, Status.IN_PROGRESS, Status.COMPLETED);
             dialog.setTitle("Update Status");
             dialog.setHeaderText("Change status for: " + selectedMedia.getTitle());
@@ -160,10 +162,81 @@ public class MainController {
                 // Call the model to update progress
                 library.updateProgress(selectedMedia, newStatus);
                 refreshList();
-                detailsTextArea.setText(selectedMedia.getDetails()); // Refresh text area
+                updateDetailsArea(selectedMedia);
             });
         } else {
             new Alert(Alert.AlertType.WARNING, "Please select an entry to update.").showAndWait();
+        }
+    }
+
+    private void updateDetailsArea(MediaEntry media) {
+        if (media == null) {
+            detailsTextArea.setText("Select an item to see details...");
+        }
+        else {
+            StringBuilder details = new StringBuilder(media.getDetails());
+
+            // If it's completed, append the rating and review
+            if (media.getCurrentStatus() == Status.COMPLETED) {
+                // Check if it has actually been reviewed/rated
+                if (media.getReview() == null) {
+                    details.append("\n\nYour Rating: (Not yet rated)");
+                } else {
+                    details.append("\n\nYour Rating: ").append(media.getRating()).append("/10");
+                    details.append("\nReview: ").append(media.getReview());
+                }
+            } else {
+                details.append("\n\n(Finish this media to rate and review it!)");
+            }
+
+            detailsTextArea.setText(details.toString());
+        }
+    }
+
+    private void handleRateReview() {
+        int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            MediaEntry selectedMedia = library.getEntry(selectedIndex);
+
+            Stage rateWindow = new Stage();
+            rateWindow.initModality(Modality.APPLICATION_MODAL);
+            rateWindow.setTitle("Rate & Review");
+
+            VBox layout = new VBox(10);
+            layout.setPadding(new Insets(15));
+
+            TextField ratingField = new TextField();
+            ratingField.setPromptText("Rating (0-10)");
+
+            TextField reviewField = new TextField();
+            reviewField.setPromptText("Write a short review...");
+
+            Button submitBtn = new Button("Submit");
+
+            submitBtn.setOnAction(e -> {
+                try {
+                    int rating = Integer.parseInt(ratingField.getText());
+                    String review = reviewField.getText();
+
+                    // THIS IS WHERE YOUR MODEL ENFORCES THE RULES!
+                    library.rateEntry(selectedMedia, rating, review);
+
+                    updateDetailsArea(selectedMedia);
+                    rateWindow.close();
+                } catch (NumberFormatException ex) {
+                    new Alert(Alert.AlertType.ERROR, "Rating must be a number!").showAndWait();
+                } catch (Exception ex) {
+                    // This catches the IllegalStateException from Library if the status isn't COMPLETED
+                    new Alert(Alert.AlertType.ERROR, ex.getMessage()).showAndWait();
+                }
+            });
+
+            layout.getChildren().addAll(new Label("Rate: " + selectedMedia.getTitle()), ratingField, reviewField, submitBtn);
+            rateWindow.setScene(new Scene(layout, 250, 150));
+            rateWindow.showAndWait();
+
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please select an entry to rate.").showAndWait();
         }
     }
 }
