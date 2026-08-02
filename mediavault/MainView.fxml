@@ -9,7 +9,7 @@
             <TextField fx:id="searchField" promptText="Search titles..." />
             <Separator />
             <Button fx:id="btnAdd" text="Add Entry" />
-            <Button fx:id="btnUpdate" text="Update mediavault.Status" />
+            <Button fx:id="btnUpdate" text="Update Status" />
             <Button fx:id="btnRate" text="Rate/Review" />
             <Button fx:id="btnDelete" text="Delete" />
             <Button fx:id="btnFilter" text="Filter" />

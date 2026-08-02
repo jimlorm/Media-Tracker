@@ -14,17 +14,17 @@ public class FileManager {
 
                 if (m instanceof Book) {
                     Book b = (Book) m;
-                    sb.append("mediavault.Book|").append(b.getTitle()).append("|").append(b.getGenre()).append("|")
+                    sb.append("Book|").append(b.getTitle()).append("|").append(b.getGenre()).append("|")
                             .append(b.getCurrentStatus().name()).append("|").append(b.getRating()).append("|")
                             .append(review).append("|").append(b.getAuthor()).append("|").append(b.getPageCount());
                 } else if (m instanceof Movie) {
                     Movie mov = (Movie) m;
-                    sb.append("mediavault.Movie|").append(mov.getTitle()).append("|").append(mov.getGenre()).append("|")
+                    sb.append("Movie|").append(mov.getTitle()).append("|").append(mov.getGenre()).append("|")
                             .append(mov.getCurrentStatus().name()).append("|").append(mov.getRating()).append("|")
                             .append(review).append("|").append(mov.getDirector()).append("|").append(mov.getRuntimeMinutes());
                 } else if (m instanceof TVSeries) {
                     TVSeries tv = (TVSeries) m;
-                    sb.append("mediavault.TVSeries|").append(tv.getTitle()).append("|").append(tv.getGenre()).append("|")
+                    sb.append("TVSeries|").append(tv.getTitle()).append("|").append(tv.getGenre()).append("|")
                             .append(tv.getCurrentStatus().name()).append("|").append(tv.getRating()).append("|")
                             .append(review).append("|").append(tv.getTotalEpisodes()).append("|");
 
@@ -65,15 +65,15 @@ public class FileManager {
                     int rating = Integer.parseInt(parts[4]);
                     String review = parts[5].equals("NO_REVIEW") ? null : parts[5];
 
-                    if (type.equals("mediavault.Book")) {
+                    if (type.equals("Book")) {
                         Book b = new Book(title, genre, status, parts[6], Integer.parseInt(parts[7]));
                         if (status == Status.COMPLETED && review != null) b.rate(rating, review);
                         library.addEntry(b);
-                    } else if (type.equals("mediavault.Movie")) {
+                    } else if (type.equals("Movie")) {
                         Movie m = new Movie(title, genre, status, parts[6], Integer.parseInt(parts[7]));
                         if (status == Status.COMPLETED && review != null) m.rate(rating, review);
                         library.addEntry(m);
-                    } else if (type.equals("mediavault.TVSeries")) {
+                    } else if (type.equals("TVSeries")) {
                         TVSeries tv = new TVSeries(title, genre, status, Integer.parseInt(parts[6]));
                         if (status == Status.COMPLETED && review != null) tv.rate(rating, review);
 

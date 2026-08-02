@@ -14,7 +14,7 @@ public class Book extends MediaEntry {
     private int pageCount;
 
     /**
-     * Constructs a new mediavault.Book entry.
+     * Constructs a new Book entry.
      *
      * @param title     the title of the book
      * @param genre     the genre of the book
@@ -73,9 +73,9 @@ public class Book extends MediaEntry {
      */
     @Override
     public String getDetails() {
-        return "[mediavault.Book] " + title + "\n" +
+        return "[Book] " + title + "\n" +
                "Author: " + author + "\n" +
-               "Genre: " + genre + " | mediavault.Status: " + currentStatus + "\n" +
+               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
                "Length: " + pageCount + " pages";
     }
 }

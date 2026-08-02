@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * Represents a library of media entries.
- * <p>This class manages all operations that will be done on each mediavault.MediaEntry</p>
+ * <p>This class manages all operations that will be done on each MediaEntry</p>
  *
  * @author Jimlor
  * @version 2.0

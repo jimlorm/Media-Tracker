@@ -27,7 +27,7 @@ public class MainApp extends Application {
         MainController controller = loader.getController();
         controller.setUser(currentUser);
 
-        primaryStage.setTitle("mediavault.MediaVault - " + currentUser.getUsername() + "'s Collection");
+        primaryStage.setTitle("MediaVault - " + currentUser.getUsername() + "'s Collection");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }

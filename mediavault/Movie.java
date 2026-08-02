@@ -75,9 +75,9 @@ public class Movie extends MediaEntry {
      */
     @Override
     public String getDetails() {
-        return "[mediavault.Movie] " + title + "\n" +
+        return "[Movie] " + title + "\n" +
                "Director: " + director + "\n" +
-               "Genre: " + genre + " | mediavault.Status: " + currentStatus + "\n" +
+               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
                "Runtime: " + runtimeMinutes + " mins";
     }
 }

@@ -77,7 +77,7 @@ public class TVSeries extends MediaEntry {
     @Override
     public String getDetails() {
         return "[TV Series] " + title + "\n" +
-               "Genre: " + genre + " | mediavault.Status: " + currentStatus + "\n" +
+               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
                "Total Episodes: " + totalEpisodes;
     }
 }
