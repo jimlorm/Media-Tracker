@@ -7,27 +7,25 @@ public class FileManager {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (MediaEntry m : library.getAllMedia()) {
                 StringBuilder sb = new StringBuilder();
-                
-                // Handle null reviews safely
+
                 String review = m.getReview() == null ? "NO_REVIEW" : m.getReview();
-                
+
                 if (m instanceof Book) {
                     Book b = (Book) m;
                     sb.append("Book|").append(b.getTitle()).append("|").append(b.getGenre()).append("|")
-                      .append(b.getCurrentStatus()).append("|").append(b.getRating()).append("|")
-                      .append(review).append("|").append(b.getAuthor()).append("|").append(b.getPageCount());
+                            .append(b.getCurrentStatus().name()).append("|").append(b.getRating()).append("|")
+                            .append(review).append("|").append(b.getAuthor()).append("|").append(b.getPageCount());
                 } else if (m instanceof Movie) {
                     Movie mov = (Movie) m;
                     sb.append("Movie|").append(mov.getTitle()).append("|").append(mov.getGenre()).append("|")
-                      .append(mov.getCurrentStatus()).append("|").append(mov.getRating()).append("|")
-                      .append(review).append("|").append(mov.getDirector()).append("|").append(mov.getRuntimeMinutes());
+                            .append(mov.getCurrentStatus().name()).append("|").append(mov.getRating()).append("|")
+                            .append(review).append("|").append(mov.getDirector()).append("|").append(mov.getRuntimeMinutes());
                 } else if (m instanceof TVSeries) {
                     TVSeries tv = (TVSeries) m;
                     sb.append("TVSeries|").append(tv.getTitle()).append("|").append(tv.getGenre()).append("|")
-                      .append(tv.getCurrentStatus()).append("|").append(tv.getRating()).append("|")
-                      .append(review).append("|").append(tv.getTotalEpisodes()).append("|");
-                    
-                    // Append episodes using a special delimiter
+                            .append(tv.getCurrentStatus().name()).append("|").append(tv.getRating()).append("|")
+                            .append(review).append("|").append(tv.getTotalEpisodes()).append("|");
+
                     if (tv.getEpisodes().isEmpty()) {
                         sb.append("NO_EPISODES");
                     } else {
@@ -38,7 +36,7 @@ public class FileManager {
                         }
                     }
                 }
-                
+
                 writer.write(sb.toString());
                 writer.newLine();
             }
@@ -54,12 +52,14 @@ public class FileManager {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\|");
-                    if (parts.length < 8) continue; // Skip corrupted lines
+                    if (parts.length < 8) continue;
 
                     String type = parts[0];
                     String title = parts[1];
                     String genre = parts[2];
+
                     Status status = Status.valueOf(parts[3]);
+
                     int rating = Integer.parseInt(parts[4]);
                     String review = parts[5].equals("NO_REVIEW") ? null : parts[5];
 
@@ -74,7 +74,7 @@ public class FileManager {
                     } else if (type.equals("TVSeries")) {
                         TVSeries tv = new TVSeries(title, genre, status, Integer.parseInt(parts[6]));
                         if (status == Status.COMPLETED && review != null) tv.rate(rating, review);
-                        
+
                         String epsData = parts[7];
                         if (!epsData.equals("NO_EPISODES")) {
                             String[] epArray = epsData.split(";;");
