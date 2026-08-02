@@ -35,6 +35,8 @@ public class MainController {
         // Listen for add entry button
         btnAdd.setOnAction(event -> handleAddEntry());
 
+        // Listen for update status button
+        btnUpdate.setOnAction(event -> handleUpdateStatus());
     }
 
     public void setLibrary(Library library) {
@@ -140,5 +142,28 @@ public class MainController {
 
         addWindow.setScene(new Scene(layout, 300, 250));
         addWindow.showAndWait();
+    }
+
+    private void handleUpdateStatus() {
+        int selectedIndex = mediaListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            MediaEntry selectedMedia = library.getEntry(selectedIndex);
+
+            // Create a simple built-in dropdown dialog
+            ChoiceDialog<Status> dialog = new ChoiceDialog<>(selectedMedia.getCurrentStatus(), Status.PLANNED, Status.IN_PROGRESS, Status.COMPLETED);
+            dialog.setTitle("Update Status");
+            dialog.setHeaderText("Change status for: " + selectedMedia.getTitle());
+            dialog.setContentText("Select new status:");
+
+            Optional<Status> result = dialog.showAndWait();
+            result.ifPresent(newStatus -> {
+                // Call the model to update progress
+                library.updateProgress(selectedMedia, newStatus);
+                refreshList();
+                detailsTextArea.setText(selectedMedia.getDetails()); // Refresh text area
+            });
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please select an entry to update.").showAndWait();
+        }
     }
 }
