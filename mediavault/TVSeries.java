@@ -1,3 +1,5 @@
+package mediavault;
+
 import java.util.ArrayList;
 
 /**
@@ -28,6 +30,7 @@ public class TVSeries extends MediaEntry {
 
     /**
      * Gets the total number of episodes in the series.
+     *
      * @return the total episode count
      */
     public int getTotalEpisodes() { 
@@ -36,7 +39,9 @@ public class TVSeries extends MediaEntry {
 
     /**
      * Sets the total number of episodes in the series.
+     *
      * @param totalEpisodes the new total episode count
+     * @throws IllegalArgumentException if the episode count provided is negative
      */
     public void setTotalEpisodes(int totalEpisodes) {
         if (totalEpisodes < 0) {
@@ -48,6 +53,7 @@ public class TVSeries extends MediaEntry {
 
     /**
      * Retrieves the list of tracked episodes for this series.
+     *
      * @return an ArrayList of {@link Episode} objects
      */
     public ArrayList<Episode> getEpisodes() { 
@@ -56,6 +62,7 @@ public class TVSeries extends MediaEntry {
 
     /**
      * Adds a newly watched episode to the series tracking list.
+     *
      * @param ep the {@link Episode} to add
      */
     public void addEpisode(Episode ep) {
@@ -63,12 +70,14 @@ public class TVSeries extends MediaEntry {
     }
 
     /**
-     * Displays the core details of the TV series
+     * Retrieves the formatted details of the TV series.
+     *
+     * @return a string containing the series information
      */
     @Override
     public String getDetails() {
         return "[TV Series] " + title + "\n" +
-               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
+               "Genre: " + genre + " | mediavault.Status: " + currentStatus + "\n" +
                "Total Episodes: " + totalEpisodes;
     }
 }
