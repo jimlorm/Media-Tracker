@@ -1,3 +1,5 @@
+package mediavault;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,6 +18,9 @@ public class MainController {
     @FXML private ListView<String> mediaListView;
     @FXML private TextArea detailsTextArea;
     @FXML private Button btnAdd, btnUpdate, btnRate, btnDelete, btnFilter;
+    @FXML private TextField searchField;
+    @FXML private Button btnSummary;
+    private User currentUser;
 
     private Library library;
     private List<MediaEntry> currentDisplayedMedia = new ArrayList<>();
@@ -47,10 +52,17 @@ public class MainController {
 
         // Listen for filter button
         btnFilter.setOnAction(event -> handleFilter());
+
+        // Listen for summary button
+        btnSummary.setOnAction(event -> handleSummary());
+
+        // Listen for live typing in the search
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch(newValue));
     }
 
-    public void setLibrary(Library library) {
-        this.library = library;
+    public void setUser(User user) {
+        this.currentUser = user;
+        this.library = user.getLibrary();
         refreshList(library.getAllMedia());
     }
 
@@ -71,12 +83,12 @@ public class MainController {
         // Create options for the user to pick from
         List<String> filterOptions = Arrays.asList(
                 "Show All",
-                "Status: Planned", "Status: In Progress", "Status: Completed",
-                "Type: Book", "Type: Movie", "Type: TV Series"
+                "mediavault.Status: Planned", "mediavault.Status: In Progress", "mediavault.Status: Completed",
+                "Type: mediavault.Book", "Type: mediavault.Movie", "Type: TV Series"
         );
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Show All", filterOptions);
-        dialog.setTitle("Filter Library");
+        dialog.setTitle("Filter mediavault.Library");
         dialog.setHeaderText("Filter your media entries");
         dialog.setContentText("Select a filter option:");
 
@@ -84,15 +96,15 @@ public class MainController {
         result.ifPresent(choice -> {
             if (choice.equals("Show All")) {
                 refreshList(library.getAllMedia());
-            } else if (choice.equals("Status: Planned")) {
+            } else if (choice.equals("mediavault.Status: Planned")) {
                 refreshList(library.getMediaByStatus(Status.PLANNED));
-            } else if (choice.equals("Status: In Progress")) {
+            } else if (choice.equals("mediavault.Status: In Progress")) {
                 refreshList(library.getMediaByStatus(Status.IN_PROGRESS));
-            } else if (choice.equals("Status: Completed")) {
+            } else if (choice.equals("mediavault.Status: Completed")) {
                 refreshList(library.getMediaByStatus(Status.COMPLETED));
-            } else if (choice.equals("Type: Book")) {
+            } else if (choice.equals("Type: mediavault.Book")) {
                 refreshList(library.getMediaByType(Book.class));
-            } else if (choice.equals("Type: Movie")) {
+            } else if (choice.equals("Type: mediavault.Movie")) {
                 refreshList(library.getMediaByType(Movie.class));
             } else if (choice.equals("Type: TV Series")) {
                 refreshList(library.getMediaByType(TVSeries.class));
@@ -140,8 +152,8 @@ public class MainController {
         layout.setPadding(new Insets(15));
 
         ComboBox<String> typeBox = new ComboBox<>();
-        typeBox.getItems().addAll("Book", "Movie", "TV Series");
-        typeBox.setValue("Book");
+        typeBox.getItems().addAll("mediavault.Book", "mediavault.Movie", "TV Series");
+        typeBox.setValue("mediavault.Book");
 
         TextField titleField = new TextField();
         titleField.setPromptText("Enter Title");
@@ -150,10 +162,10 @@ public class MainController {
         genreField.setPromptText("Enter Genre");
 
         TextField extra1Field = new TextField();
-        extra1Field.setPromptText("Author (Book) / Director (Movie) / Episodes (TV)");
+        extra1Field.setPromptText("Author (mediavault.Book) / Director (mediavault.Movie) / Episodes (TV)");
 
         TextField extra2Field = new TextField();
-        extra2Field.setPromptText("Pages (Book) / Runtime (Movie) / Leave empty for TV");
+        extra2Field.setPromptText("Pages (mediavault.Book) / Runtime (mediavault.Movie) / Leave empty for TV");
 
         Button submitButton = new Button("Save Entry");
 
@@ -163,10 +175,10 @@ public class MainController {
                 String title = titleField.getText();
                 String genre = genreField.getText();
 
-                if (type.equals("Book")) {
+                if (type.equals("mediavault.Book")) {
                     int pages = Integer.parseInt(extra2Field.getText());
                     library.addEntry(new Book(title, genre, Status.PLANNED, extra1Field.getText(), pages));
-                } else if (type.equals("Movie")) {
+                } else if (type.equals("mediavault.Movie")) {
                     int runtime = Integer.parseInt(extra2Field.getText());
                     library.addEntry(new Movie(title, genre, Status.PLANNED, extra1Field.getText(), runtime));
                 } else if (type.equals("TV Series")) {
@@ -174,12 +186,12 @@ public class MainController {
                     TVSeries newSeries = new TVSeries(title, genre, Status.PLANNED, episodes);
 
                     for (int i = 1; i <= episodes; i++) {
-                        TextInputDialog epDialog = new TextInputDialog("Episode " + i);
-                        epDialog.setTitle("Add Episode Details");
-                        epDialog.setHeaderText("Enter title for Episode " + i + " of " + title);
+                        TextInputDialog epDialog = new TextInputDialog("mediavault.Episode " + i);
+                        epDialog.setTitle("Add mediavault.Episode Details");
+                        epDialog.setHeaderText("Enter title for mediavault.Episode " + i + " of " + title);
 
                         Optional<String> epTitle = epDialog.showAndWait();
-                        newSeries.addEpisode(new Episode(epTitle.orElse("Episode " + i), i));
+                        newSeries.addEpisode(new Episode(epTitle.orElse("mediavault.Episode " + i), i));
                     }
                     library.addEntry(newSeries);
                 }
@@ -209,7 +221,7 @@ public class MainController {
             MediaEntry selectedMedia = currentDisplayedMedia.get(selectedIndex);
 
             ChoiceDialog<Status> dialog = new ChoiceDialog<>(selectedMedia.getCurrentStatus(), Status.PLANNED, Status.IN_PROGRESS, Status.COMPLETED);
-            dialog.setTitle("Update Status");
+            dialog.setTitle("Update mediavault.Status");
             dialog.setHeaderText("Change status for: " + selectedMedia.getTitle());
             dialog.setContentText("Select new status:");
 
@@ -242,7 +254,7 @@ public class MainController {
             }
 
             if (media instanceof TVSeries) {
-                details.append("\n\n--- Episode List ---");
+                details.append("\n\n--- mediavault.Episode List ---");
                 for (Episode ep : ((TVSeries) media).getEpisodes()) {
                     details.append("\n").append(ep.getDetails());
                 }
@@ -294,6 +306,55 @@ public class MainController {
 
         } else {
             new Alert(Alert.AlertType.WARNING, "Please select an entry to rate.").showAndWait();
+        }
+    }
+
+    private void handleSearch(String query) {
+        if (library != null) {
+            // If the search bar is empty, show everything
+            if (query == null || query.trim().isEmpty()) {
+                refreshList(library.getAllMedia());
+            }
+            else {
+                // Otherwise, filter by title (case-insensitive)
+                List<MediaEntry> searchResults = new ArrayList<>();
+                for (MediaEntry m : library.getAllMedia()) {
+                    if (m.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                        searchResults.add(m);
+                    }
+                }
+                refreshList(searchResults);
+            }
+        }
+    }
+
+    private void handleSummary() {
+        if (library != null && currentUser != null) {
+            int total = library.getSize();
+            int planned = library.getMediaByStatus(Status.PLANNED).size();
+            int inProgress = library.getMediaByStatus(Status.IN_PROGRESS).size();
+            int completed = library.getMediaByStatus(Status.COMPLETED).size();
+
+            int books = library.getMediaByType(Book.class).size();
+            int movies = library.getMediaByType(Movie.class).size();
+            int tvs = library.getMediaByType(TVSeries.class).size();
+
+            String summary = "mediavault.Library Owner: " + currentUser.getUsername() + "\n\n" +
+                    "Total Media Entries: " + total + "\n\n" +
+                    "--- By mediavault.Status ---\n" +
+                    "Planned: " + planned + "\n" +
+                    "In Progress: " + inProgress + "\n" +
+                    "Completed: " + completed + "\n\n" +
+                    "--- By Type ---\n" +
+                    "Books: " + books + "\n" +
+                    "Movies: " + movies + "\n" +
+                    "TV Series: " + tvs;
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("mediavault.Library Summary");
+            alert.setHeaderText("Media Vault Statistics");
+            alert.setContentText(summary);
+            alert.showAndWait();
         }
     }
 }
