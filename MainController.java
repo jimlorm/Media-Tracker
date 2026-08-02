@@ -7,6 +7,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.ChoiceDialog;
 import java.util.Optional;
+import javafx.scene.control.TextInputDialog;
 
 public class MainController {
 
@@ -125,7 +126,17 @@ public class MainController {
                     library.addEntry(new Movie(title, genre, Status.PLANNED, extra1Field.getText(), runtime));
                 } else if (type.equals("TV Series")) {
                     int episodes = Integer.parseInt(extra1Field.getText());
-                    library.addEntry(new TVSeries(title, genre, Status.PLANNED, episodes));
+                    TVSeries newSeries = new TVSeries(title, genre, Status.PLANNED, episodes);
+
+                    for (int i = 1; i <= episodes; i++) {
+                        TextInputDialog epDialog = new TextInputDialog("Episode " + i);
+                        epDialog.setTitle("Add Episode Details");
+                        epDialog.setHeaderText("Enter title for Episode " + i + " of " + title);
+                        
+                        Optional<String> epTitle = epDialog.showAndWait();
+                        newSeries.addEpisode(new Episode(epTitle.orElse("Episode " + i), i));
+                    }
+                    library.addEntry(newSeries);
                 }
 
                 refreshList();
@@ -187,6 +198,13 @@ public class MainController {
                 }
             } else {
                 details.append("\n\n(Finish this media to rate and review it!)");
+            }
+
+            if (media instanceof TVSeries) {
+                details.append("\n\n--- Episode List ---");
+                for (Episode ep : ((TVSeries) media).getEpisodes()) {
+                    details.append("\n").append(ep.getDetails());
+                }
             }
 
             detailsTextArea.setText(details.toString());
