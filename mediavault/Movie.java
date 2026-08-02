@@ -1,3 +1,5 @@
+package mediavault;
+
 /**
  * Represents a standalone movie entry in the library.
  * <p>Extends the {@link MediaEntry} class with movie-specific attributes.</p>
@@ -27,6 +29,7 @@ public class Movie extends MediaEntry {
 
     /**
      * Gets the director of the movie.
+     *
      * @return the director's name
      */
     public String getDirector() { 
@@ -35,6 +38,7 @@ public class Movie extends MediaEntry {
 
     /**
      * Sets the director of the movie.
+     *
      * @param director the new director name
      */
     public void setDirector(String director) { 
@@ -43,6 +47,7 @@ public class Movie extends MediaEntry {
     
     /**
      * Gets the runtime of the movie.
+     *
      * @return the runtime in minutes
      */
     public int getRuntimeMinutes() { 
@@ -51,7 +56,9 @@ public class Movie extends MediaEntry {
 
     /**
      * Sets the runtime of the movie.
+     *
      * @param runtimeMinutes the new runtime in minutes
+     * @throws IllegalArgumentException if the runtime provided is negative
      */
     public void setRuntimeMinutes(int runtimeMinutes) { 
         if (runtimeMinutes < 0) {
@@ -60,15 +67,17 @@ public class Movie extends MediaEntry {
         
         this.runtimeMinutes = runtimeMinutes; 
     }
-    
+
     /**
-     * Displays the core details of the movie.
+     * Retrieves the formatted details of the movie.
+     *
+     * @return a string containing the movie's information
      */
     @Override
     public String getDetails() {
-        return "[Movie] " + title + "\n" +
+        return "[mediavault.Movie] " + title + "\n" +
                "Director: " + director + "\n" +
-               "Genre: " + genre + " | Status: " + currentStatus + "\n" +
+               "Genre: " + genre + " | mediavault.Status: " + currentStatus + "\n" +
                "Runtime: " + runtimeMinutes + " mins";
     }
 }
