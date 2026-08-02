@@ -1,3 +1,5 @@
+package mediavault;
+
 /**
  * Represents a user of the Media Vault.
  *
@@ -7,13 +9,13 @@
 public class User {
     /** The username of this component */
     private String username;
-    /** The library of media entries of this component. */
+    /** The library of media entries of this user. */
     private Library myLibrary;
 
     /**
-     * Class constructor specifying the username of this instance.
+     * Constructs a new User with the specified username.
      *
-     * @param username the username of the new <code>User</code> instance.
+     * @param username the username of the new user instance
      */
     public User(String username) {
         this.username = username;
@@ -21,25 +23,25 @@ public class User {
     }
 
     /**
-     * Gets the name assigned to this component.
+     * Gets the username assigned to this user.
      *
-     * @return the name of this <code>User</code>.
+     * @return the username of this user
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * Retrieves the <code>Library</code> object of this class
+     * Retrieves the Library object belonging to this user.
      *
-     * @return the <code>Library</code> of this <code>User</code>
+     * @return the Library instance containing the user's media
      */
     public Library getLibrary() {
         return myLibrary;
     }
 
     /**
-     * Sets the username of this class instance to a new name.
+     * Sets the username of this user to a new name.
      *
      * @param name the new username that will be set.
      */
