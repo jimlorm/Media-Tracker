@@ -23,7 +23,7 @@ public class Book extends MediaEntry {
     public Book(String title, String genre, Status status, String author, int pageCount) {
         super(title, genre, status);
         this.author = author;
-        this.pageCount = pageCount;
+        setPageCount(pageCount);
     }
 
     /**
@@ -55,7 +55,11 @@ public class Book extends MediaEntry {
      * @param pageCount the new page count
      */
     public void setPageCount(int pageCount) {
-        this.pageCount = pageCount; 
+        if (pageCount < 0) {
+            throw new IllegalArgumentException("Page count cannot be negative.");
+        }
+        
+        this.pageCount = pageCount;
     }
 
     /**
