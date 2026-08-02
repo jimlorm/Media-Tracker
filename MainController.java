@@ -9,6 +9,20 @@ public class MainController {
 
     private Library library;
 
+    @FXML
+    public void initialize() {
+        mediaListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            int selectedIndex = newValue.intValue();
+
+            if (selectedIndex >= 0 && library != null) {
+                MediaEntry selectedMedia = library.getEntry(selectedIndex);
+                if (selectedMedia != null) {
+                    detailsTextArea.setText(selectedMedia.getDetails());
+                }
+            }
+        });
+    }
+
     public void setLibrary(Library library) {
         this.library = library;
         refreshList();
