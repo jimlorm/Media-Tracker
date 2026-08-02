@@ -1,11 +1,14 @@
+package mediavault;
+
 /**
  * Represents a single episode belonging to an episodic media entry like a TV Series.
  * @author Jimlor
- * @version 1.2
+ * @version 2.0
  */
 public class Episode {
     /** The title of the episode. */
     private String title;
+
     /** The numerical order of the episode */
     private int episodeNumber;
 
@@ -14,7 +17,6 @@ public class Episode {
      *
      * @param title         the title of the episode
      * @param episodeNumber the episode's numerical order
-     * @param season        the season number
      */
     public Episode(String title, int episodeNumber) {
         this.title = title;
@@ -23,6 +25,7 @@ public class Episode {
 
     /**
      * Gets the title of the episode.
+     *
      * @return the episode title
      */
     public String getTitle() { 
@@ -31,6 +34,7 @@ public class Episode {
 
     /**
      * Sets the title of the episode.
+     *
      * @param title the new title
      */
     public void setTitle(String title) { 
@@ -39,6 +43,7 @@ public class Episode {
 
     /**
      * Gets the numerical order of the episode.
+     *
      * @return the episode number
      */
     public int getEpisodeNumber() { 
@@ -47,14 +52,15 @@ public class Episode {
 
     /**
      * Sets the numerical order of the episode.
-     * @param episodeNumber the new episode number
+     *
+     * @param episodeNumber the new episode number to assign
      */
     public void setEpisodeNumber(int episodeNumber) { 
         this.episodeNumber = episodeNumber; 
     }
     
     /**
-     * Retrieves the episode's season, number, and title.
+     * Retrieves the episode's number and title.
      * 
      * @return a formatted string of the episode details
      */
