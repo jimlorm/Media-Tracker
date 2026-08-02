@@ -22,7 +22,7 @@ public class TVSeries extends MediaEntry {
      */
     public TVSeries(String title, String genre, Status status, int totalEpisodes) {
         super(title, genre, status);
-        this.totalEpisodes = totalEpisodes;
+        setTotalEpisodes(totalEpisodes);
         this.episodes = new ArrayList<>();
     }
 
@@ -39,6 +39,10 @@ public class TVSeries extends MediaEntry {
      * @param totalEpisodes the new total episode count
      */
     public void setTotalEpisodes(int totalEpisodes) {
+        if (totalEpisodes < 0) {
+            throw new IllegalArgumentException("Total episodes cannot be negative.");
+        }
+        
         this.totalEpisodes = totalEpisodes; 
     }
 
